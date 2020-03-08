@@ -1,0 +1,32 @@
+version: '3'
+
+# Rerences: https://medium.com/@renato.groffe/postgresql-pgadmin-4-docker-compose-montando-rapidamente-um-ambiente-para-uso-55a2ab230b89
+
+services:
+  postgres:
+    image: postgres 
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-network   
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "root@localhost"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    ports:
+      - "5433:80"
+    networks:
+      - postgres-network
+    depends_on:
+      - postgres
+
+networks: 
+  postgres-network:
+    driver: bridge
